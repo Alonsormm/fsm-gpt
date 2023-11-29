@@ -51,20 +51,18 @@ class DFA {
   factory DFA.fromJson(String jsonString) {
     final jsonMap = json.decode(jsonString);
 
-    final Set<int> states =
-        Set<int>.from(jsonMap['s'].map((e) => int.parse(e)));
+    final Set<int> states = Set<int>.from(jsonMap['s'].map((e) => e));
     final Set<String> alphabet = Set<String>.from(jsonMap['a']);
     final transitions = <int, Map<String, int>>{};
 
     jsonMap['d'].forEach((key, value) {
       transitions[int.parse(key)] = Map<String, int>.from(value.map((k, v) {
-        return MapEntry(k, int.parse(v));
+        return MapEntry(k, v);
       }));
     });
 
-    final int initialState = int.parse(jsonMap['s_0']);
-    final Set<int> finalStates =
-        Set<int>.from(jsonMap['f_s'].map((e) => int.parse(e)));
+    final int initialState = jsonMap['s_0'];
+    final Set<int> finalStates = Set<int>.from(jsonMap['f_s'].map((e) => e));
 
     return DFA(
       states: states,

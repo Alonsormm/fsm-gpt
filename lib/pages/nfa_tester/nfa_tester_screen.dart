@@ -6,7 +6,8 @@ import 'package:fsm_gpt/pages/nfa_tester/nfa_tester_cubit.dart'; // Asumiendo qu
 
 class NFATesterScreen extends StatelessWidget {
   final NFA nfa;
-  const NFATesterScreen({super.key, required this.nfa});
+  final String? description;
+  const NFATesterScreen({super.key, required this.nfa, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,14 @@ class NFATesterScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("NFA Tester"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showNFAInfoDialog(context, nfa, description: description);
+              },
+              icon: const Icon(Icons.info_outline),
+            ),
+          ],
         ),
         body: _NFATesterDisplay(nfa: nfa),
       ),
@@ -147,4 +156,39 @@ class _InputEvaluatorIndicator extends StatelessWidget {
       ),
     );
   }
+}
+
+showNFAInfoDialog(BuildContext context, NFA nfa, {String? description}) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("NFA Info"),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("States: ${nfa.states.join(", ")}"),
+              Text("Alphabet: ${nfa.alphabet.join(", ")}"),
+              const Text("Transitions:"),
+              for (var entry in nfa.transitions.entries)
+                Text(
+                    "${entry.key} -> ${entry.value.entries.map((e) => "${e.key}: ${e.value.join(", ")}").join(", ")}"),
+              Text("Initial State: ${nfa.initialState}"),
+              Text("Final States: ${nfa.finalStates.join(", ")}"),
+              if (description != null) Text("Description: $description"),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Close"),
+          ),
+        ],
+      );
+    },
+  );
 }

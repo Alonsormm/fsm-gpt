@@ -6,7 +6,8 @@ import 'package:fsm_gpt/pages/dfa_tester/dfa_tester_cubit.dart';
 
 class DFATesterScreen extends StatelessWidget {
   final DFA dfa;
-  const DFATesterScreen({super.key, required this.dfa});
+  final String? description;
+  const DFATesterScreen({super.key, required this.dfa, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,20 @@ class DFATesterScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("DFA Tester"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => DFAInfoDialog(
+                    dfa: dfa,
+                    description: description,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.info_outline),
+            ),
+          ],
         ),
         body: _DFATesterDisplay(dfa: dfa),
       ),
@@ -187,6 +202,39 @@ class _InputEvaluatorIndicator extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class DFAInfoDialog extends StatelessWidget {
+  final DFA dfa;
+  final String? description;
+  const DFAInfoDialog({super.key, required this.dfa, this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("DFA Info"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Description: ${description ?? "No description"}"),
+          Text("States: ${dfa.states.map((e) => "q$e").join(", ")}"),
+          Text("Alphabet: ${dfa.alphabet.join(", ")}"),
+          Text("Initial State: q${dfa.initialState}"),
+          Text(
+            "Final States: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text("Close"),
+        ),
+      ],
     );
   }
 }

@@ -5,7 +5,9 @@ import 'package:fsm_gpt/pages/manual/turing_machine_tester.dart/turing_machine_t
 
 class TuringMachineTesterScreen extends StatelessWidget {
   final TuringMachine turingMachine;
-  const TuringMachineTesterScreen({super.key, required this.turingMachine});
+  final String? description;
+  const TuringMachineTesterScreen(
+      {super.key, required this.turingMachine, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class TuringMachineTesterScreen extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => TuringMachineSummaryDialog(
+                    description: description,
                     turingMachine: turingMachine,
                   ),
                 );
@@ -156,7 +159,9 @@ class _DelaySelector extends StatelessWidget {
 
 class TuringMachineSummaryDialog extends StatelessWidget {
   final TuringMachine turingMachine;
-  const TuringMachineSummaryDialog({super.key, required this.turingMachine});
+  final String? description;
+  const TuringMachineSummaryDialog(
+      {super.key, required this.turingMachine, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +170,7 @@ class TuringMachineSummaryDialog extends StatelessWidget {
       content: SingleChildScrollView(
         child: Column(
           children: [
+            if (description != null) Text("Description: $description"),
             Text("States: ${turingMachine.states.join(", ")}"),
             Text("Tape Alphabet: ${turingMachine.tapeAlphabet.join(", ")}"),
             Text("Input Alphabet: ${turingMachine.inputAlphabet.join(", ")}"),

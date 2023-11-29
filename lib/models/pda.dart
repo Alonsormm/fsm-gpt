@@ -237,7 +237,6 @@ class PushdownAutomaton {
     }
 
     final initialState = PdaState(jsonMap['s_0'] as int);
-    final initialStackSymbol = jsonMap['g_0'] as String;
     final acceptanceStates = (jsonMap['f_s'] as List<dynamic>)
         .map((state) => PdaState(state as int))
         .toSet();
@@ -248,7 +247,7 @@ class PushdownAutomaton {
       stackAlphabet: stackAlphabet,
       transitions: transitions,
       initialState: initialState,
-      initialStackSymbol: initialStackSymbol,
+      initialStackSymbol: 'Z0', // TODO: Make this configurable
       acceptanceStates: acceptanceStates,
     );
   }

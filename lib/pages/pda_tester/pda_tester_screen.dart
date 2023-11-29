@@ -6,7 +6,8 @@ import 'package:fsm_gpt/pages/pda_tester/pda_tester_cubit.dart'; // Asegúrate d
 
 class PDATesterScreen extends StatelessWidget {
   final PushdownAutomaton pda;
-  const PDATesterScreen({super.key, required this.pda});
+  final String? description;
+  const PDATesterScreen({super.key, required this.pda, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,20 @@ class PDATesterScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("PDA Tester"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => PDAInfoDialog(
+                    pda: pda,
+                    description: description,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.info_outline),
+            ),
+          ],
         ),
         body: _PDATesterDisplay(pda: pda),
       ),
@@ -148,6 +163,40 @@ class _InputEvaluatorIndicator extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class PDAInfoDialog extends StatelessWidget {
+  final PushdownAutomaton pda;
+  final String? description;
+  const PDAInfoDialog({super.key, required this.pda, this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("PDA Info"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Description: ${description ?? "No description"}"),
+          Text("States: ${pda.states.join(", ")}"),
+          Text("Input Alphabet: ${pda.inputAlphabet.join(", ")}"),
+          Text("Stack Alphabet: ${pda.stackAlphabet.join(", ")}"),
+          Text("Initial State: ${pda.initialState}"),
+          Text("Accepting States: ${pda.acceptanceStates.join(", ")}"),
+          Text("Transitions:"),
+          for (final transition in pda.transitions) Text(transition.toString()),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text("Close"),
+        ),
+      ],
     );
   }
 }
