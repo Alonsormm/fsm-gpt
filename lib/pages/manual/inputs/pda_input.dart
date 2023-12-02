@@ -17,7 +17,7 @@ class _PDACreatorState extends State<PDACreator> {
   List<int> states = [];
   List<String> inputAlphabet = ['ε']; // Add ε to the alphabet
   List<String> stackAlphabet = ['Z0', 'ε'];
-  List<PdaTransition> transitions = [];
+  List<PDATransition> transitions = [];
   int? initialState;
   String? initialStackSymbol;
   Set<int> acceptanceStates = {};
@@ -54,11 +54,11 @@ class _PDACreatorState extends State<PDACreator> {
         .toSet();
 
     if (nextStates.isNotEmpty) {
-      transitions.add(PdaTransition(
-        currentState: PdaState(state),
+      transitions.add(PDATransition(
+        currentState: PDAState(state),
         inputSymbol: inputSymbol,
         stackSymbol: stackSymbol,
-        nextState: PdaState(nextStates.first!),
+        nextState: PDAState(nextStates.first!),
         newStackSymbol: newStackSymbolController.text,
       ));
       nextStateController.clear();
@@ -176,7 +176,7 @@ class _PDACreatorState extends State<PDACreator> {
       TransactionInput(
         inputAlphabet: inputAlphabet,
         stackAlphabet: stackAlphabet,
-        states: states.map((state) => PdaState(state)).toList(),
+        states: states.map((state) => PDAState(state)).toList(),
         onAddTransition: (transition) {
           // check if transition already exists
           if (transitions.contains(transition)) {
@@ -288,7 +288,7 @@ class _PDACreatorState extends State<PDACreator> {
         //   );
         //   print(pda.toJson());
         // }
-        final pda = PushdownAutomaton.fromJson(
+        final pda = PDA.fromJson(
             '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');
         debugPrint(pda.toJson());
         Navigator.of(context).pushReplacement(
@@ -344,7 +344,7 @@ class _PDACreatorState extends State<PDACreator> {
 }
 
 class TransitionsForm extends StatefulWidget {
-  final void Function(PdaTransition) onAddTransition;
+  final void Function(PDATransition) onAddTransition;
   const TransitionsForm({super.key, required this.onAddTransition});
 
   @override
@@ -361,8 +361,8 @@ class _TransitionsFormState extends State<TransitionsForm> {
 class TransactionInput extends StatefulWidget {
   final List<String> inputAlphabet;
   final List<String> stackAlphabet;
-  final List<PdaState> states;
-  final void Function(PdaTransition) onAddTransition;
+  final List<PDAState> states;
+  final void Function(PDATransition) onAddTransition;
 
   const TransactionInput({
     super.key,
@@ -499,11 +499,11 @@ class _TransactionInputState extends State<TransactionInput> {
         ElevatedButton(
           onPressed: () {
             // Agregar la transición
-            final transition = PdaTransition(
-              currentState: PdaState(currentState!),
+            final transition = PDATransition(
+              currentState: PDAState(currentState!),
               inputSymbol: inputSymbol!,
               stackSymbol: stackSymbol!,
-              nextState: PdaState(nextState!),
+              nextState: PDAState(nextState!),
               newStackSymbol: newStackSymbolsController.text,
             );
             widget.onAddTransition(transition);

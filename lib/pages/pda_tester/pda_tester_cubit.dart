@@ -5,7 +5,7 @@ import 'package:fsm_gpt/models/pda.dart';
 part 'pda_tester_state.dart';
 
 class PDATesterCubit extends Cubit<PDATesterState> {
-  final PushdownAutomaton pda;
+  final PDA pda;
 
   PDATesterCubit({required this.pda})
       : super(const PDATesterSettingUp(

@@ -44,7 +44,7 @@ class AutomaticoGenerated extends AutomaticoFlowState {
 
   final DFA? dfa;
   final NFA? nfa;
-  final PushdownAutomaton? pda;
+  final PDA? pda;
   final TuringMachine? turingMachine;
 
   const AutomaticoGenerated({

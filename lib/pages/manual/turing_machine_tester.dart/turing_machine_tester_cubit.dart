@@ -36,7 +36,7 @@ class TuringMachineTesterCubit extends Cubit<TuringMachineTesterState> {
       return;
     }
 
-    final (nextState, nextTape, headPosition) = turingMachine.step(
+    final (nextState, nextTape, headPosition) = turingMachine.nextStep(
       evaluatingState.currentState,
       evaluatingState.tape,
       evaluatingState.headPosition,

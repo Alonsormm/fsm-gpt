@@ -62,7 +62,7 @@ class TuringMachine {
     required this.acceptanceStates,
   });
 
-  bool analyzeString(String input) {
+  bool evaluateString(String input) {
     var currentState = initialState;
     var currentSymbolIndex = 0;
     var tape = input.split('');
@@ -97,7 +97,7 @@ class TuringMachine {
     return acceptanceStates.contains(currentState);
   }
 
-  (TuringState? state, List<String> tape, int headPosition) step(
+  (TuringState? state, List<String> tape, int headPosition) nextStep(
     TuringState state,
     List<String> tape,
     int headPosition,

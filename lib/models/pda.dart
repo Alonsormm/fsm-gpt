@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class PdaState extends Equatable {
+class PDAState extends Equatable {
   final int name;
 
-  const PdaState(this.name);
+  const PDAState(this.name);
 
   @override
   String toString() => 'q$name';
@@ -14,11 +14,11 @@ class PdaState extends Equatable {
   List<Object?> get props => [name];
 }
 
-class PdaTransition extends Equatable {
-  final PdaState currentState;
+class PDATransition extends Equatable {
+  final PDAState currentState;
   final String inputSymbol;
   final String stackSymbol;
-  final PdaState nextState;
+  final PDAState nextState;
 
   /// `newStackSymbol` representa la operación que se realiza en la pila
   /// como resultado de la transición del autómata de pila.
@@ -38,7 +38,7 @@ class PdaTransition extends Equatable {
 
   final String newStackSymbol;
 
-  const PdaTransition({
+  const PDATransition({
     required this.currentState,
     required this.inputSymbol,
     required this.stackSymbol,
@@ -61,16 +61,16 @@ class PdaTransition extends Equatable {
       ];
 }
 
-class PushdownAutomaton {
-  final Set<PdaState> states;
+class PDA {
+  final Set<PDAState> states;
   final Set<String> inputAlphabet;
   final Set<String> stackAlphabet;
-  final List<PdaTransition> transitions;
-  final PdaState initialState;
+  final List<PDATransition> transitions;
+  final PDAState initialState;
   final String initialStackSymbol;
-  final Set<PdaState> acceptanceStates;
+  final Set<PDAState> acceptanceStates;
 
-  PushdownAutomaton({
+  PDA({
     required this.states,
     required this.inputAlphabet,
     required this.stackAlphabet,
@@ -81,7 +81,7 @@ class PushdownAutomaton {
   });
 
   // Método para analizar una cadena
-  bool analyzeString(String input) {
+  bool evaluateString(String input) {
     // Implementación inicial: asumimos PDA determinista para simplificar
     var currentState = initialState;
     var stack = [initialStackSymbol];
@@ -107,15 +107,15 @@ class PushdownAutomaton {
     return acceptanceStates.contains(currentState) && stack.isEmpty;
   }
 
-  bool isFinalState(PdaState state) {
+  bool isFinalState(PDAState state) {
     return acceptanceStates.contains(state);
   }
 
-  (Set<PdaState> nextStates, List<String> newStack) nextStates(
-      Set<PdaState> currentStates,
+  (Set<PDAState> nextStates, List<String> newStack) nextStates(
+      Set<PDAState> currentStates,
       String inputSymbol,
       List<String> currentStack) {
-    final nextStates = <PdaState>{};
+    final nextStates = <PDAState>{};
     final newStackSymbols = <String>[...currentStack];
     for (final currentState in currentStates) {
       final currentStateTransitions = transitions.where((transition) =>
@@ -144,7 +144,7 @@ class PushdownAutomaton {
     return (nextStates, newStackSymbols);
   }
 
-  String toDOT(Set<PdaState>? currentStates) {
+  String toDOT(Set<PDAState>? currentStates) {
     final buffer = StringBuffer();
 
     buffer.writeln('digraph PDA {');
@@ -203,17 +203,17 @@ class PushdownAutomaton {
   }
 
   // create a from json method
-  factory PushdownAutomaton.fromJson(String json) {
+  factory PDA.fromJson(String json) {
     // based on the implementation of the to json method do the inverse
     final jsonMap = jsonDecode(json) as Map<String, dynamic>;
     final states = (jsonMap['s'] as List<dynamic>)
-        .map((state) => PdaState(state as int))
+        .map((state) => PDAState(state as int))
         .toSet();
     final inputAlphabet =
         (jsonMap['a'] as List<dynamic>).map((e) => e as String).toSet();
     final stackAlphabet =
         (jsonMap['g'] as List<dynamic>).map((e) => e as String).toSet();
-    final transitions = <PdaTransition>[];
+    final transitions = <PDATransition>[];
 
     for (final currentState in states) {
       for (final inputSymbol in inputAlphabet) {
@@ -221,11 +221,11 @@ class PushdownAutomaton {
           final transition = jsonMap['d']?[currentState.name.toString()]
               ?[inputSymbol]?[stackSymbol];
           if (transition == null) continue;
-          final nextState = PdaState(jsonMap['d'][currentState.name.toString()]
+          final nextState = PDAState(jsonMap['d'][currentState.name.toString()]
               [inputSymbol]![stackSymbol][0] as int);
           final newStackSymbol = jsonMap['d'][currentState.name.toString()]
               [inputSymbol]![stackSymbol][1] as String;
-          transitions.add(PdaTransition(
+          transitions.add(PDATransition(
             currentState: currentState,
             inputSymbol: inputSymbol,
             stackSymbol: stackSymbol,
@@ -236,12 +236,12 @@ class PushdownAutomaton {
       }
     }
 
-    final initialState = PdaState(jsonMap['s_0'] as int);
+    final initialState = PDAState(jsonMap['s_0'] as int);
     final acceptanceStates = (jsonMap['f_s'] as List<dynamic>)
-        .map((state) => PdaState(state as int))
+        .map((state) => PDAState(state as int))
         .toSet();
 
-    return PushdownAutomaton(
+    return PDA(
       states: states,
       inputAlphabet: inputAlphabet,
       stackAlphabet: stackAlphabet,

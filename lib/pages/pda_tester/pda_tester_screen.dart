@@ -5,7 +5,7 @@ import 'package:fsm_gpt/models/pda.dart';
 import 'package:fsm_gpt/pages/pda_tester/pda_tester_cubit.dart'; // Asegúrate de que esta clase exista
 
 class PDATesterScreen extends StatelessWidget {
-  final PushdownAutomaton pda;
+  final PDA pda;
   final String? description;
   const PDATesterScreen({super.key, required this.pda, this.description});
 
@@ -38,7 +38,7 @@ class PDATesterScreen extends StatelessWidget {
 }
 
 class _PDATesterDisplay extends StatelessWidget {
-  final PushdownAutomaton pda;
+  final PDA pda;
   const _PDATesterDisplay({required this.pda});
 
   @override
@@ -99,7 +99,7 @@ class _PDATesterDisplay extends StatelessWidget {
     );
   }
 
-  Expanded _pdaVisualizer(Set<PdaState>? currentState) {
+  Expanded _pdaVisualizer(Set<PDAState>? currentState) {
     return Expanded(
       child: CachedNetworkImage(
         imageUrl:
@@ -168,7 +168,7 @@ class _InputEvaluatorIndicator extends StatelessWidget {
 }
 
 class PDAInfoDialog extends StatelessWidget {
-  final PushdownAutomaton pda;
+  final PDA pda;
   final String? description;
   const PDAInfoDialog({super.key, required this.pda, this.description});
 

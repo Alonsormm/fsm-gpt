@@ -36,7 +36,7 @@ class PDATesterSettingUp extends PDATesterState {
 }
 
 class PDATesterEvaluating extends PDATesterState {
-  final Set<PdaState> currentStates;
+  final Set<PDAState> currentStates;
   final int currentInputIndex;
   final Timer timer;
   final bool isAccepted;
@@ -69,7 +69,7 @@ class PDATesterEvaluating extends PDATesterState {
     double? evaluateDelay,
     String? input,
     List<String>? stack,
-    Set<PdaState>? currentStates,
+    Set<PDAState>? currentStates,
     int? currentInputIndex,
     Timer? timer,
     bool? isAccepted,

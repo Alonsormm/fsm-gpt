@@ -98,8 +98,6 @@ class FSMFromTextService {
     final jsonString = await OpenAIService.generateTextFromPrompt(
         getInstructions(FSMType.dfa), text);
 
-    print(jsonString);
-
     return (DFA.fromJson(jsonString), jsonString);
   }
 
@@ -109,20 +107,16 @@ class FSMFromTextService {
     final jsonString = await OpenAIService.generateTextFromPrompt(
         getInstructions(FSMType.nfa), text);
 
-    print(jsonString);
-
     return (NFA.fromJson(jsonString), jsonString);
   }
 
-  static Future<(PushdownAutomaton pda, String jsonString)> generatePDAFromText(
+  static Future<(PDA pda, String jsonString)> generatePDAFromText(
     String text,
   ) async {
     final jsonString = await OpenAIService.generateTextFromPrompt(
         getInstructions(FSMType.pda), text);
 
-    print(jsonString);
-
-    return (PushdownAutomaton.fromJson(jsonString), jsonString);
+    return (PDA.fromJson(jsonString), jsonString);
   }
 
   static Future<(TuringMachine turingMachine, String jsonString)>
@@ -131,8 +125,6 @@ class FSMFromTextService {
   ) async {
     final jsonString = await OpenAIService.generateTextFromPrompt(
         getInstructions(FSMType.turing), text);
-
-    print(jsonString);
 
     return (TuringMachine.fromJson(jsonString), jsonString);
   }
