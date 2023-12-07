@@ -15,7 +15,7 @@ class NFATesterScreen extends StatelessWidget {
       create: (context) => NFATesterCubit(nfa: nfa),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("NFA Tester"),
+          title: const Text("Prueba de AFND"),
           actions: [
             IconButton(
               onPressed: () {
@@ -49,7 +49,7 @@ class _NFATesterDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: "Input"),
+                decoration: const InputDecoration(labelText: "Entrada"),
                 onChanged: (input) {
                   context.read<NFATesterCubit>().setInput(input);
                 },
@@ -57,7 +57,8 @@ class _NFATesterDisplay extends StatelessWidget {
               _DelaySelector(
                 currentCubitState: currentCubitState,
               ),
-              Text("Evaluate Delay: ${currentCubitState.evaluateDelay}s"),
+              Text(
+                  "Retraso en la simulación: ${currentCubitState.evaluateDelay}s"),
               if (currentCubitState is NFATesterEvaluating)
                 _InputEvaluatorIndicator(
                   currentCubitState: currentCubitState,
@@ -71,16 +72,18 @@ class _NFATesterDisplay extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  currentCubitState is NFATesterEvaluating ? "Reset" : "Start",
+                  currentCubitState is NFATesterEvaluating
+                      ? "Volver a empezar"
+                      : "Empezar",
                 ),
               ),
               if (currentCubitState is NFATesterEvaluating)
                 Text(
-                    "Current States: ${currentCubitState.currentStates.join(", ")}"),
+                    "Estado Actuales: ${currentCubitState.currentStates.join(", ")}"),
               if (currentCubitState is NFATesterEvaluating &&
                   currentCubitState.isFinished)
                 Text(
-                  "Result: ${currentCubitState.isAccepted ? "Accepted" : "Rejected"}",
+                  "Resultado: ${currentCubitState.isAccepted ? "Aceptado" : "Rechazado"}",
                 ),
               _nfaVisualizer(currentStates)
             ],
@@ -163,20 +166,20 @@ showNFAInfoDialog(BuildContext context, NFA nfa, {String? description}) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text("NFA Info"),
+        title: const Text("AFND Info"),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("States: ${nfa.states.join(", ")}"),
-              Text("Alphabet: ${nfa.alphabet.join(", ")}"),
-              const Text("Transitions:"),
+              Text("Estados: ${nfa.states.join(", ")}"),
+              Text("Alfabeto: ${nfa.alphabet.join(", ")}"),
+              const Text("Transiciones:"),
               for (var entry in nfa.transitions.entries)
                 Text(
                     "${entry.key} -> ${entry.value.entries.map((e) => "${e.key}: ${e.value.join(", ")}").join(", ")}"),
               Text("Initial State: ${nfa.initialState}"),
               Text("Final States: ${nfa.finalStates.join(", ")}"),
-              if (description != null) Text("Description: $description"),
+              if (description != null) Text("Descripcion: $description"),
             ],
           ),
         ),
@@ -185,7 +188,7 @@ showNFAInfoDialog(BuildContext context, NFA nfa, {String? description}) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text("Close"),
+            child: const Text("Cerrar"),
           ),
         ],
       );

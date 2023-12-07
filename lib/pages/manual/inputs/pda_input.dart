@@ -33,7 +33,7 @@ class _PDACreatorState extends State<PDACreator> {
     if (state == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter a valid state'),
+          content: Text('Por favor ingrese un estado válido'),
         ),
       );
       return;
@@ -98,14 +98,15 @@ class _PDACreatorState extends State<PDACreator> {
             Expanded(
               child: TextFormField(
                 controller: stateController,
-                decoration: const InputDecoration(labelText: 'State Name'),
+                decoration:
+                    const InputDecoration(labelText: 'Nombre del estado'),
               ),
             ),
           ],
         ),
         ElevatedButton(
           onPressed: addState,
-          child: const Text('Add State'),
+          child: const Text('Agregar estado'),
         ),
       ],
     );
@@ -120,11 +121,11 @@ class _PDACreatorState extends State<PDACreator> {
             .toList(),
         TextFormField(
           controller: symbolController,
-          decoration: const InputDecoration(labelText: 'Symbol'),
+          decoration: const InputDecoration(labelText: 'Símbolo'),
         ),
         ElevatedButton(
           onPressed: addSymbol,
-          child: const Text('Add Symbol'),
+          child: const Text('Agregar símbolo'),
         ),
       ],
     );
@@ -139,11 +140,11 @@ class _PDACreatorState extends State<PDACreator> {
             .toList(),
         TextFormField(
           controller: stackSymbolController,
-          decoration: const InputDecoration(labelText: 'Stack Symbol'),
+          decoration: const InputDecoration(labelText: 'Símbolo de Pila'),
         ),
         ElevatedButton(
           onPressed: addStackSymbol,
-          child: const Text('Add Stack Symbol'),
+          child: const Text('Agregar símbolo de pila'),
         ),
       ],
     );
@@ -182,7 +183,7 @@ class _PDACreatorState extends State<PDACreator> {
           if (transitions.contains(transition)) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Transition already exists'),
+                content: Text('La transición ya existe'),
               ),
             );
             return;
@@ -213,7 +214,7 @@ class _PDACreatorState extends State<PDACreator> {
         const Text('Initial State'),
         DropdownButton<int?>(
           value: initialState,
-          hint: const Text('Select Initial State'),
+          hint: const Text('Seleccione un estado inicial'),
           items: states.map((int value) {
             return DropdownMenuItem<int>(
               value: value,
@@ -227,7 +228,7 @@ class _PDACreatorState extends State<PDACreator> {
           },
           isExpanded: true,
         ),
-        const Text('Acceptance States'),
+        const Text('Seleccionar estados finales'),
         ...states
             .map((state) => CheckboxListTile(
                   title: Text('q$state'),
@@ -306,34 +307,34 @@ class _PDACreatorState extends State<PDACreator> {
       },
       steps: <Step>[
         Step(
-          title: const Text('States'),
+          title: const Text('Estados'),
           content: _statesStep(),
           isActive: _currentStep >= 0,
           state: StepState.indexed,
-          subtitle: Text('States: ${states.map((s) => 'q$s').join(', ')}'),
+          subtitle: Text('Estados: ${states.map((s) => 'q$s').join(', ')}'),
         ),
         Step(
-          title: const Text('Alphabet'),
+          title: const Text('Alfabeto'),
           content: _alphabetStep(),
           isActive: _currentStep >= 1,
           state: StepState.indexed,
-          subtitle: Text('Alphabet: ${inputAlphabet.join(', ')}'),
+          subtitle: Text('Alfabeto: ${inputAlphabet.join(', ')}'),
         ),
         Step(
-          title: const Text('Stack Alphabet'),
+          title: const Text('Alfabeto de la Pila'),
           content: _stackAlphabetStep(),
           isActive: _currentStep >= 2,
           state: StepState.indexed,
-          subtitle: Text('Stack Alphabet: ${stackAlphabet.join(', ')}'),
+          subtitle: Text('Alfabeto de la Pila: ${stackAlphabet.join(', ')}'),
         ),
         Step(
-          title: const Text('Transitions'),
+          title: const Text('Transiciones'),
           content: _transitionsStep(),
           isActive: _currentStep >= 3,
           state: StepState.indexed,
         ),
         Step(
-          title: const Text('Initial and Acceptance States'),
+          title: const Text('Estados Iniciales y Finales'),
           content: _initialAndFinalStatesStep(),
           isActive: _currentStep >= 4,
           state: StepState.indexed,
@@ -466,7 +467,7 @@ class _TransactionInputState extends State<TransactionInput> {
               child: TextFormField(
                 controller: newStackSymbolsController,
                 decoration:
-                    const InputDecoration(labelText: 'New Stack Symbol'),
+                    const InputDecoration(labelText: 'Símbolos de Pila Nuevos'),
                 inputFormatters: [
                   // only allow already declared stack symbols
                   FilteringTextInputFormatter.allow(

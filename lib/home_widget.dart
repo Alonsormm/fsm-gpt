@@ -12,7 +12,7 @@ class HomeWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "FSM GPT",
+          "Maquinas de Estado Finito - GPT",
           style: context.general.textTheme.titleLarge,
         ),
       ),

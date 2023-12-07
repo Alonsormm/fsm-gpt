@@ -1,8 +1,8 @@
 enum FSMType {
-  dfa("Deterministic Finite Automata"),
-  nfa("Non-deterministic Finite Automata"),
-  pda("Pushdown Automata"),
-  turing("Turing Machine");
+  dfa("Autómata Finito Deterministico"),
+  nfa("Autómata Finito No Deterministico"),
+  pda("Autómata de Pila"),
+  turing("Máquina de Turing");
 
   final String label;
 

@@ -15,7 +15,7 @@ class DFATesterScreen extends StatelessWidget {
       create: (context) => DFATesterCubit(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("DFA Tester"),
+          title: const Text("Prueba de AFD"),
           actions: [
             IconButton(
               onPressed: () {
@@ -69,7 +69,8 @@ class _DFATesterDisplay extends StatelessWidget {
                 _InputEvaluatorIndicator(
                   currentCubitState: currentCubitState,
                 ),
-              Text("Evaluate Delay: ${currentCubitState.evaluateDelay}s"),
+              Text(
+                  "Retardo en simulación: ${currentCubitState.evaluateDelay}s"),
               TextButton(
                 onPressed: () {
                   startEvaluation(context);
@@ -77,16 +78,16 @@ class _DFATesterDisplay extends StatelessWidget {
                 child: const Text("Start"),
               ),
               if (currentCubitState is DFATesterEvaluating)
-                Text("Current State: q${currentCubitState.currentState}"),
+                Text("Estado Actual: q${currentCubitState.currentState}"),
               if (currentCubitState is DFATesterFinished)
                 Column(
                   children: [
-                    Text("Current State: q${currentCubitState.currentState}"),
+                    Text("Estado Actual: q${currentCubitState.currentState}"),
                     Text(
-                      "finalStates: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
+                      "Estados Finales: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
                     ),
                     Text(
-                      "Result: ${currentCubitState.isAccepted ? "Accepted" : "Rejected"}",
+                      "Resultado: ${currentCubitState.isAccepted ? "Accepted" : "Rejected"}",
                     ),
                   ],
                 ),
@@ -219,11 +220,11 @@ class DFAInfoDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text("Description: ${description ?? "No description"}"),
-          Text("States: ${dfa.states.map((e) => "q$e").join(", ")}"),
-          Text("Alphabet: ${dfa.alphabet.join(", ")}"),
-          Text("Initial State: q${dfa.initialState}"),
+          Text("Estados: ${dfa.states.map((e) => "q$e").join(", ")}"),
+          Text("Alfabeto: ${dfa.alphabet.join(", ")}"),
+          Text("Estado Inicial: q${dfa.initialState}"),
           Text(
-            "Final States: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
+            "Estados Finales: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
           ),
         ],
       ),
@@ -232,7 +233,7 @@ class DFAInfoDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("Close"),
+          child: const Text("Cerrar"),
         ),
       ],
     );

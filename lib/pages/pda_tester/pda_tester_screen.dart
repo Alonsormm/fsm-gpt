@@ -15,7 +15,7 @@ class PDATesterScreen extends StatelessWidget {
       create: (context) => PDATesterCubit(pda: pda),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("PDA Tester"),
+          title: const Text("Prueba de PDA"),
           actions: [
             IconButton(
               onPressed: () {
@@ -51,7 +51,7 @@ class _PDATesterDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: "Input"),
+                decoration: const InputDecoration(labelText: "Entrada"),
                 onChanged: (input) {
                   context.read<PDATesterCubit>().setInput(input);
                 },
@@ -59,7 +59,8 @@ class _PDATesterDisplay extends StatelessWidget {
               _DelaySelector(
                 currentCubitState: currentCubitState,
               ),
-              Text("Evaluate Delay: ${currentCubitState.evaluateDelay}s"),
+              Text(
+                  "Retraso en la simulación: ${currentCubitState.evaluateDelay}s"),
               if (currentCubitState is PDATesterEvaluating)
                 _InputEvaluatorIndicator(
                   currentCubitState: currentCubitState,
@@ -73,21 +74,23 @@ class _PDATesterDisplay extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  currentCubitState is PDATesterEvaluating ? "Reset" : "Start",
+                  currentCubitState is PDATesterEvaluating
+                      ? "Volver a empezar"
+                      : "Empezar",
                 ),
               ),
               if (currentCubitState is PDATesterEvaluating) ...[
                 Text(
-                  "Current State: ${currentCubitState.currentStates.join(", ")}",
+                  "Estado Actual: ${currentCubitState.currentStates.join(", ")}",
                 ),
                 Text(
-                  "Current Stack: ${currentCubitState.stack}",
+                  "Pila actual: ${currentCubitState.stack}",
                 ),
               ],
               if (currentCubitState is PDATesterEvaluating &&
                   currentCubitState.isFinished)
                 Text(
-                  "Result: ${currentCubitState.isAccepted ? "Accepted" : "Rejected"}",
+                  "Resultado: ${currentCubitState.isAccepted ? "Aceptado" : "Rechazado"}",
                 ),
               _pdaVisualizer(currentCubitState is PDATesterEvaluating
                   ? currentCubitState.currentStates
@@ -179,13 +182,13 @@ class PDAInfoDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Description: ${description ?? "No description"}"),
-          Text("States: ${pda.states.join(", ")}"),
-          Text("Input Alphabet: ${pda.inputAlphabet.join(", ")}"),
-          Text("Stack Alphabet: ${pda.stackAlphabet.join(", ")}"),
-          Text("Initial State: ${pda.initialState}"),
-          Text("Accepting States: ${pda.acceptanceStates.join(", ")}"),
-          Text("Transitions:"),
+          Text("Descripcción: ${description ?? "No description"}"),
+          Text("Estados: ${pda.states.join(", ")}"),
+          Text("Alfabeto: ${pda.inputAlphabet.join(", ")}"),
+          Text("Alfabeto de la pila: ${pda.stackAlphabet.join(", ")}"),
+          Text("Estados iniciales: ${pda.initialState}"),
+          Text("Estados finales: ${pda.acceptanceStates.join(", ")}"),
+          const Text("Transiciones:"),
           for (final transition in pda.transitions) Text(transition.toString()),
         ],
       ),
@@ -194,7 +197,7 @@ class PDAInfoDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("Close"),
+          child: const Text("Cerrar"),
         ),
       ],
     );

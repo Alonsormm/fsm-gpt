@@ -26,7 +26,7 @@ class _DFACreatorState extends State<DFACreator> {
     if (state == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter a valid state'),
+          content: Text('Por favor ingrese un estado válido'),
         ),
       );
       return;
@@ -60,14 +60,15 @@ class _DFACreatorState extends State<DFACreator> {
             Expanded(
               child: TextFormField(
                 controller: stateController,
-                decoration: const InputDecoration(labelText: 'State Name'),
+                decoration:
+                    const InputDecoration(labelText: 'Nombre del estado'),
               ),
             ),
           ],
         ),
         ElevatedButton(
           onPressed: addState,
-          child: const Text('Add State'),
+          child: const Text('Agregar estado'),
         ),
       ],
     );
@@ -80,11 +81,11 @@ class _DFACreatorState extends State<DFACreator> {
         ...alphabet.map((symbol) => ListTile(title: Text(symbol))).toList(),
         TextFormField(
           controller: symbolController,
-          decoration: const InputDecoration(labelText: 'Symbol'),
+          decoration: const InputDecoration(labelText: 'Símbolo'),
         ),
         ElevatedButton(
           onPressed: addSymbol,
-          child: const Text('Add Symbol'),
+          child: const Text('Agregar símbolo'),
         ),
       ],
     );
@@ -105,7 +106,7 @@ class _DFACreatorState extends State<DFACreator> {
 
         widgets.add(Row(
           children: <Widget>[
-            Text('From q$state on $symbol go to '),
+            Text('Desde q$state con $symbol ir a '),
             DropdownButton<int>(
               value: selectedState,
               items: states.map((int value) {
@@ -140,10 +141,10 @@ class _DFACreatorState extends State<DFACreator> {
 
     return Column(
       children: <Widget>[
-        const Text('Initial State'),
+        const Text('Estado Inicial'),
         DropdownButton<int?>(
           value: initialState,
-          hint: const Text('Select Initial State'),
+          hint: const Text('Seleccione un estado inicial'),
           items: states.map((int value) {
             return DropdownMenuItem<int>(
               value: value,
@@ -201,7 +202,7 @@ class _DFACreatorState extends State<DFACreator> {
                   finalStates.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Please fill all the fields'),
+                    content: Text('Por favor llene todos los campos'),
                   ),
                 );
                 return;
@@ -231,27 +232,27 @@ class _DFACreatorState extends State<DFACreator> {
           },
           steps: <Step>[
             Step(
-              title: const Text('States'),
+              title: const Text('Estados'),
               content: _statesStep(),
               isActive: _currentStep >= 0,
               state: StepState.indexed,
-              subtitle: Text('States: ${states.map((s) => 'q$s').join(', ')}'),
+              subtitle: Text('Estados: ${states.map((s) => 'q$s').join(', ')}'),
             ),
             Step(
-              title: const Text('Alphabet'),
+              title: const Text('Alfabeto'),
               content: _alphabetStep(),
               isActive: _currentStep >= 1,
               state: StepState.indexed,
-              subtitle: Text('Alphabet: ${alphabet.join(', ')}'),
+              subtitle: Text('Alfabeto: ${alphabet.join(', ')}'),
             ),
             Step(
-              title: const Text('Transitions'),
+              title: const Text('Transiciones'),
               content: _transitionsStep(),
               isActive: _currentStep >= 2,
               state: StepState.indexed,
             ),
             Step(
-              title: const Text('Initial and Final States'),
+              title: const Text('Estados Iniciales y Finales'),
               content: _initialAndFinalStatesStep(),
               isActive: _currentStep >= 3,
               state: StepState.indexed,

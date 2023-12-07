@@ -18,7 +18,7 @@ class AutomaticoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "FSM GPT - Automatico",
+          "MEF GPT - Automatico",
           style: context.general.textTheme.titleLarge,
         ),
       ),

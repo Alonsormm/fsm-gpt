@@ -13,7 +13,7 @@ class ManualPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "FSM GPT - Manual",
+            "MEF GPT - Manual",
             style: context.general.textTheme.titleLarge,
           ),
         ),

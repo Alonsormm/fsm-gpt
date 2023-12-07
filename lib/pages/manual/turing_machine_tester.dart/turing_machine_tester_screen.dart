@@ -16,7 +16,7 @@ class TuringMachineTesterScreen extends StatelessWidget {
           TuringMachineTesterCubit(turingMachine: turingMachine),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Turing Machine Tester"),
+          title: const Text("Prueba de Máquina de Turing"),
           actions: [
             IconButton(
               onPressed: () {
@@ -53,15 +53,15 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: "Input"),
+                decoration: const InputDecoration(labelText: "Entrada"),
                 onChanged: (input) {
                   context.read<TuringMachineTesterCubit>().setInput(input);
                 },
               ),
               const SizedBox(height: 8),
-              const Text("Delay"),
+              const Text("Retraso en la simulación: "),
               _DelaySelector(currentCubitState: currentCubitState),
-              Text('Delay: ${currentCubitState.timerDuration} seconds'),
+              Text('Retraso: ${currentCubitState.timerDuration} seconds'),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () {
@@ -73,19 +73,19 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
                 },
                 child: Text(
                   currentCubitState is TuringMachineTesterEvaluating
-                      ? "Reset"
-                      : "Start",
+                      ? "Volver a empezar"
+                      : "Empezar",
                 ),
               ),
               if (currentCubitState is TuringMachineTesterEvaluating) ...[
                 Text(
-                  "Current State: ${currentCubitState.currentState}",
+                  "Estado Actual: ${currentCubitState.currentState}",
                 ),
                 Text(
-                  "Current Tape: ${currentCubitState.tape.join("")}",
+                  "Cinta actual: ${currentCubitState.tape.join("")}",
                 ),
                 Text(
-                  "Head Position: ${currentCubitState.headPosition}",
+                  "Posicion del cabezal: ${currentCubitState.headPosition}",
                 ),
               ],
               if (currentCubitState is TuringMachineTesterEvaluating &&
@@ -166,18 +166,18 @@ class TuringMachineSummaryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Turing Machine Summary"),
+      title: const Text("Máquina de Turing"),
       content: SingleChildScrollView(
         child: Column(
           children: [
-            if (description != null) Text("Description: $description"),
-            Text("States: ${turingMachine.states.join(", ")}"),
-            Text("Tape Alphabet: ${turingMachine.tapeAlphabet.join(", ")}"),
-            Text("Input Alphabet: ${turingMachine.inputAlphabet.join(", ")}"),
-            Text("Transitions:\n ${turingMachine.transitions.join("\n")}"),
-            Text("Initial State: ${turingMachine.initialState}"),
+            if (description != null) Text("Descripción: $description"),
+            Text("Estados: ${turingMachine.states.join(", ")}"),
             Text(
-                "Acceptance States: ${turingMachine.acceptanceStates.join(", ")}"),
+                "Alfabeto de la cinta: ${turingMachine.tapeAlphabet.join(", ")}"),
+            Text("Alfabeto: ${turingMachine.inputAlphabet.join(", ")}"),
+            Text("Transiciones:\n ${turingMachine.transitions.join("\n")}"),
+            Text("Estado inicial: ${turingMachine.initialState}"),
+            Text("Estado final: ${turingMachine.acceptanceStates.join(", ")}"),
           ],
         ),
       ),
@@ -186,7 +186,7 @@ class TuringMachineSummaryDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("Close"),
+          child: const Text("Cerrar"),
         ),
       ],
     );

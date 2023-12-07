@@ -29,7 +29,7 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
     if (state == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter a valid state'),
+          content: Text('Por favor ingrese un estado válido'),
         ),
       );
       return;
@@ -87,14 +87,15 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
             Expanded(
               child: TextFormField(
                 controller: stateController,
-                decoration: const InputDecoration(labelText: 'State Name'),
+                decoration:
+                    const InputDecoration(labelText: 'Nombre del estado'),
               ),
             ),
           ],
         ),
         ElevatedButton(
           onPressed: addState,
-          child: const Text('Add State'),
+          child: const Text('Agregar estado'),
         ),
       ],
     );
@@ -109,11 +110,11 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
             .toList(),
         TextFormField(
           controller: symbolController,
-          decoration: const InputDecoration(labelText: 'Symbol'),
+          decoration: const InputDecoration(labelText: 'Símbolo'),
         ),
         ElevatedButton(
           onPressed: addSymbol,
-          child: const Text('Add Symbol'),
+          child: const Text('Agregar símbolo'),
         ),
       ],
     );
@@ -126,11 +127,11 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
         ...tapeAlphabet.map((symbol) => ListTile(title: Text(symbol))).toList(),
         TextFormField(
           controller: tapeSymbolController,
-          decoration: const InputDecoration(labelText: 'Tape Symbol'),
+          decoration: const InputDecoration(labelText: 'Simbolo de la cinta'),
         ),
         ElevatedButton(
           onPressed: addTapeSymbol,
-          child: const Text('Add Tape Symbol'),
+          child: const Text('Agregar símbolo'),
         ),
       ],
     );
@@ -167,7 +168,7 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
           if (transitions.contains(transition)) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Transition already exists'),
+                content: Text('La transición ya existe'),
               ),
             );
             return;
@@ -195,10 +196,10 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
 
     return Column(
       children: <Widget>[
-        const Text('Initial State'),
+        const Text('Estado Inicial'),
         DropdownButton<int?>(
           value: initialState,
-          hint: const Text('Select Initial State'),
+          hint: const Text('Seleccionar Estado Inicial'),
           items: states.map((int value) {
             return DropdownMenuItem<int>(
               value: value,
@@ -212,7 +213,7 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
           },
           isExpanded: true,
         ),
-        const Text('Acceptance States'),
+        const Text('Estados finales'),
         ...states
             .map((state) => CheckboxListTile(
                   title: Text('q$state'),
@@ -255,7 +256,7 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
               acceptanceStates.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Please fill all the fields'),
+                content: Text('Por favor llene todos los campos'),
               ),
             );
             return;
@@ -295,34 +296,34 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
       },
       steps: <Step>[
         Step(
-          title: const Text('States'),
+          title: const Text('Estados'),
           content: _statesStep(),
           isActive: _currentStep >= 0,
           state: StepState.indexed,
-          subtitle: Text('States: ${states.map((s) => 'q$s').join(', ')}'),
+          subtitle: Text('Estados: ${states.map((s) => 'q$s').join(', ')}'),
         ),
         Step(
-          title: const Text('Alphabet'),
+          title: const Text('Alfabeto'),
           content: _alphabetStep(),
           isActive: _currentStep >= 1,
           state: StepState.indexed,
-          subtitle: Text('Alphabet: ${inputAlphabet.join(', ')}'),
+          subtitle: Text('Alfabeto: ${inputAlphabet.join(', ')}'),
         ),
         Step(
           title: const Text('Tape Alphabet'),
           content: _tapeAlphabetStep(),
           isActive: _currentStep >= 2,
           state: StepState.indexed,
-          subtitle: Text('Tape Alphabet: ${tapeAlphabet.join(', ')}'),
+          subtitle: Text('Alfabeto de la cinta: ${tapeAlphabet.join(', ')}'),
         ),
         Step(
-          title: const Text('Transitions'),
+          title: const Text('Transiciones'),
           content: _transitionsStep(),
           isActive: _currentStep >= 3,
           state: StepState.indexed,
         ),
         Step(
-          title: const Text('Initial and Acceptance States'),
+          title: const Text('Estados Iniciales y Finales'),
           content: _initialAndFinalStatesStep(),
           isActive: _currentStep >= 4,
           state: StepState.indexed,
