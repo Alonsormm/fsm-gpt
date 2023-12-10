@@ -34,50 +34,62 @@ class AutomaticoFlowCubit extends Cubit<AutomaticoFlowState> {
     emit((state as AutomaticoFlowInteracting).copyWith(isLoading: true));
     final description = (state as AutomaticoFlowInteracting).description;
     final type = (state as AutomaticoFlowInteracting).type;
-    switch (type) {
-      case FSMType.dfa:
-        final (dfa, raw) =
-            await FSMFromTextService.generateDFAFromText(description!);
-        emit(AutomaticoGenerated(
-          description: description,
+    try {
+      switch (type) {
+        case FSMType.dfa:
+          final (dfa, raw) =
+              await FSMFromTextService.generateDFAFromText(description!);
+          emit(AutomaticoGenerated(
+            description: description,
+            type: type,
+            raw: raw,
+            dfa: dfa,
+          ));
+          break;
+        case FSMType.nfa:
+          final (nfa, raw) =
+              await FSMFromTextService.generateNFAFromText(description!);
+          emit(AutomaticoGenerated(
+            description: description,
+            type: type,
+            raw: raw,
+            nfa: nfa,
+          ));
+          break;
+        case FSMType.pda:
+          final (pda, raw) =
+              await FSMFromTextService.generatePDAFromText(description!);
+          emit(AutomaticoGenerated(
+            description: description,
+            type: type,
+            raw: raw,
+            pda: pda,
+          ));
+          break;
+        case FSMType.turing:
+          final (turingMachine, raw) =
+              await FSMFromTextService.generateTuringMachineFromText(
+                  description!);
+          emit(AutomaticoGenerated(
+            description: description,
+            type: type,
+            raw: raw,
+            turingMachine: turingMachine,
+          ));
+          break;
+        default:
+          throw Exception("Not supported yet");
+      }
+    } catch (e) {
+      emit(
+        AutomaticoFlowError(
           type: type,
-          raw: raw,
-          dfa: dfa,
-        ));
-        break;
-      case FSMType.nfa:
-        final (nfa, raw) =
-            await FSMFromTextService.generateNFAFromText(description!);
-        emit(AutomaticoGenerated(
-          description: description,
-          type: type,
-          raw: raw,
-          nfa: nfa,
-        ));
-        break;
-      case FSMType.pda:
-        final (pda, raw) =
-            await FSMFromTextService.generatePDAFromText(description!);
-        emit(AutomaticoGenerated(
-          description: description,
-          type: type,
-          raw: raw,
-          pda: pda,
-        ));
-        break;
-      case FSMType.turing:
-        final (turingMachine, raw) =
-            await FSMFromTextService.generateTuringMachineFromText(
-                description!);
-        emit(AutomaticoGenerated(
-          description: description,
-          type: type,
-          raw: raw,
-          turingMachine: turingMachine,
-        ));
-        break;
-      default:
-        throw Exception("Not supported yet");
+          description: description!,
+          message: e.toString(),
+        ),
+      );
+      // rethrow the error so it can be handled by the UI
+      rethrow;
     }
   }
 }

@@ -37,7 +37,9 @@ class DFATesterEvaluating extends DFATesterState {
   final int currentState;
   final int currentInputIndex;
   final Timer timer;
-  final VoidCallback onTimerTick;
+  final bool isAccepted;
+
+  get isFinished => currentInputIndex >= input.length;
 
   const DFATesterEvaluating({
     required super.evaluateDelay,
@@ -45,12 +47,18 @@ class DFATesterEvaluating extends DFATesterState {
     required this.currentState,
     required this.timer,
     this.currentInputIndex = 0,
-    required this.onTimerTick,
+    this.isAccepted = false,
   });
 
   @override
-  List<Object?> get props =>
-      [evaluateDelay, input, currentState, timer, currentInputIndex];
+  List<Object?> get props => [
+        evaluateDelay,
+        input,
+        currentState,
+        timer,
+        currentInputIndex,
+        isAccepted
+      ];
 
   DFATesterEvaluating copyWith({
     double? evaluateDelay,
@@ -58,7 +66,7 @@ class DFATesterEvaluating extends DFATesterState {
     int? currentState,
     Timer? timer,
     int? currentInputIndex,
-    VoidCallback? onTimerTick,
+    bool? isAccepted,
   }) {
     return DFATesterEvaluating(
       evaluateDelay: evaluateDelay ?? super.evaluateDelay,
@@ -66,35 +74,6 @@ class DFATesterEvaluating extends DFATesterState {
       currentState: currentState ?? this.currentState,
       timer: timer ?? this.timer,
       currentInputIndex: currentInputIndex ?? this.currentInputIndex,
-      onTimerTick: onTimerTick ?? this.onTimerTick,
-    );
-  }
-}
-
-class DFATesterFinished extends DFATesterState {
-  final int currentState;
-  final bool isAccepted;
-
-  const DFATesterFinished({
-    required super.evaluateDelay,
-    required super.input,
-    required this.currentState,
-    required this.isAccepted,
-  });
-
-  @override
-  List<Object?> get props => [evaluateDelay, input, currentState, isAccepted];
-
-  DFATesterFinished copyWith({
-    double? evaluateDelay,
-    String? input,
-    int? currentState,
-    bool? isAccepted,
-  }) {
-    return DFATesterFinished(
-      evaluateDelay: evaluateDelay ?? super.evaluateDelay,
-      input: input ?? super.input,
-      currentState: currentState ?? this.currentState,
       isAccepted: isAccepted ?? this.isAccepted,
     );
   }

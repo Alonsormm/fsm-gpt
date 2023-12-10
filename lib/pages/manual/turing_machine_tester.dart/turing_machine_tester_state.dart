@@ -13,7 +13,7 @@ abstract class TuringMachineTesterState extends Equatable {
 
 class TuringMachineTesterSettingUp extends TuringMachineTesterState {
   const TuringMachineTesterSettingUp({
-    super.timerDuration = 2.0,
+    super.timerDuration = 1.0,
     required super.input,
   });
 }
@@ -34,14 +34,14 @@ class TuringMachineTesterEvaluating extends TuringMachineTesterState {
     this.isAccepted = false,
     this.isFinished = false,
     required super.input,
-    super.timerDuration = 2.0,
+    super.timerDuration = 1.0,
   });
 
   @override
   List<Object?> get props => [
         input,
-        currentState,
         tape,
+        currentState,
         headPosition,
         timer,
         isAccepted,
@@ -59,7 +59,7 @@ class TuringMachineTesterEvaluating extends TuringMachineTesterState {
     return TuringMachineTesterEvaluating(
       input: input,
       currentState: currentState ?? this.currentState,
-      tape: tape ?? this.tape,
+      tape: [...tape ?? this.tape],
       headPosition: headPosition ?? this.headPosition,
       timer: timer ?? this.timer,
       isAccepted: isAccepted ?? this.isAccepted,
@@ -74,7 +74,7 @@ class TuringMachineTesterError extends TuringMachineTesterState {
   const TuringMachineTesterError({
     required this.errorMessage,
     required super.input,
-    super.timerDuration = 2.0,
+    super.timerDuration = 1.0,
   });
 
   @override

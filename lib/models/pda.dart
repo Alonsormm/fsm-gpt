@@ -215,23 +215,30 @@ class PDA {
         (jsonMap['g'] as List<dynamic>).map((e) => e as String).toSet();
     final transitions = <PDATransition>[];
 
-    for (final currentState in states) {
-      for (final inputSymbol in inputAlphabet) {
-        for (final stackSymbol in stackAlphabet) {
-          final transition = jsonMap['d']?[currentState.name.toString()]
-              ?[inputSymbol]?[stackSymbol];
-          if (transition == null) continue;
-          final nextState = PDAState(jsonMap['d'][currentState.name.toString()]
-              [inputSymbol]![stackSymbol][0] as int);
-          final newStackSymbol = jsonMap['d'][currentState.name.toString()]
-              [inputSymbol]![stackSymbol][1] as String;
-          transitions.add(PDATransition(
-            currentState: currentState,
-            inputSymbol: inputSymbol,
-            stackSymbol: stackSymbol,
-            nextState: nextState,
-            newStackSymbol: newStackSymbol,
-          ));
+    final jsonTransitions = jsonMap['d'] as Map<String, dynamic>;
+    for (final currentStateName in jsonTransitions.keys) {
+      final currentState = PDAState(int.parse(currentStateName));
+      final jsonCurrentStateTransitions =
+          jsonTransitions[currentStateName] as Map<String, dynamic>;
+      for (final inputSymbol in jsonCurrentStateTransitions.keys) {
+        final jsonInputSymbolTransitions =
+            jsonCurrentStateTransitions[inputSymbol] as Map<String, dynamic>;
+        for (final stackSymbol in jsonInputSymbolTransitions.keys) {
+          final jsonStackSymbolTransitions =
+              jsonInputSymbolTransitions[stackSymbol] as List<dynamic>;
+          for (var i = 0; i < jsonStackSymbolTransitions.length; i += 2) {
+            final nextState = PDAState(jsonStackSymbolTransitions[i] as int);
+            final newStackSymbol = jsonStackSymbolTransitions[i + 1] as String;
+            transitions.add(
+              PDATransition(
+                currentState: currentState,
+                inputSymbol: inputSymbol,
+                stackSymbol: stackSymbol,
+                nextState: nextState,
+                newStackSymbol: newStackSymbol,
+              ),
+            );
+          }
         }
       }
     }

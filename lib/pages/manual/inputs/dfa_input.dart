@@ -216,7 +216,7 @@ class _DFACreatorState extends State<DFACreator> {
                 initialState: initialState ?? 0,
                 finalStates: finalStates,
               );
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => DFATesterScreen(dfa: dfa),
                 ),

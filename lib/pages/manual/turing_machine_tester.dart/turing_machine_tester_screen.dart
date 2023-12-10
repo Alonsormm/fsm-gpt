@@ -49,6 +49,7 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<TuringMachineTesterCubit, TuringMachineTesterState>(
         builder: (context, currentCubitState) {
+          print("REBUILDING");
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -102,34 +103,41 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
     );
   }
 
-  Expanded _turingMachineVisualizer(
+  Widget _turingMachineVisualizer(
       TuringMachineTesterEvaluating currentCubitState) {
     // Esta función debería retornar un widget que visualice la máquina de Turing.
     // Puede ser una imagen o un widget personalizado, según tus necesidades.
     final currentTape = currentCubitState.tape;
     final headPosition = currentCubitState.headPosition;
 
-    return Expanded(
-      child: ListView.builder(
-        itemCount: currentTape.length,
-        itemBuilder: (context, index) {
-          final currentSymbol = currentTape[index];
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (index == headPosition) const Icon(Icons.arrow_back_ios),
-              Text(
-                currentSymbol,
-                style: TextStyle(
-                  fontWeight: index == headPosition
-                      ? FontWeight.bold
-                      : FontWeight.normal,
+    return Center(
+      child: SizedBox(
+        height: 100,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: currentTape.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final currentSymbol = currentTape[index];
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (index == headPosition)
+                  const Icon(Icons.keyboard_arrow_down_rounded),
+                Text(
+                  currentSymbol,
+                  style: TextStyle(
+                    fontWeight: index == headPosition
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
                 ),
-              ),
-              if (index == headPosition) const Icon(Icons.arrow_forward_ios),
-            ],
-          );
-        },
+                if (index == headPosition)
+                  const Icon(Icons.keyboard_arrow_up_rounded),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -150,8 +158,8 @@ class _DelaySelector extends StatelessWidget {
               context.read<TuringMachineTesterCubit>().setTimerDuration(value);
             }
           : null,
-      divisions: 8,
-      min: 2,
+      divisions: 9,
+      min: 1,
       max: 10,
     );
   }

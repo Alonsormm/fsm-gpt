@@ -270,7 +270,7 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
             acceptanceStates:
                 acceptanceStates.map((state) => TuringState(state)).toSet(),
           );
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) =>
                   TuringMachineTesterScreen(turingMachine: tm),
@@ -278,14 +278,47 @@ class _TuringMachineCreatorState extends State<TuringMachineCreator> {
           );
         }
 
-        // final tm = TuringMachine.fromJson(
-        //     '{"s":[0,1,2],"a":["_","0","1"],"i":["_","0","1"],"d":{"0":{"0":[0,"0","R"],"1":[1,"1","R"],"_":[2,"_","R"]},"1":{"0":[1,"0","R"],"1":[0,"1","R"],"_":[1,"_","R"]}},"s_0":0,"s_a":[2]}');
-        // print(tm.toJson());
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(
-        //     builder: (context) => TuringMachineTesterScreen(turingMachine: tm),
-        //   ),
-        // );
+        // un json en el que
+        // s es la lista de estados, los estados son enteros
+        // i es el alfabeto de entrada, una lista de cadenas
+        // a es el alfabeto de la cinta, una lista de cadenas
+        // d es un mapa de estados a un mapa de símbolos de entrada a una lista de estados, si los estados son keys entonces ponlos como string, si no, como enteros
+        // s_0 es el estado inicial, es un entero
+        // s_a es la lista de estados de aceptación, lista de enteros
+        // donde el simbolo vacio siempre es "_"
+
+//         final tm = TuringMachine.fromJson('''
+// {
+//   "s": [0, 1, 2, 3, 4],
+//   "i": ["0", "1"],
+//   "a": ["0", "1", "_"],
+//   "d": {
+//     "0": {
+//       "0": [0, "0", "R"],
+//       "1": [1, "1", "R"],
+//       "_": [3, "_", "S"]
+//     },
+//     "1": {
+//       "0": [2, "0", "R"],
+//       "1": [0, "1", "R"],
+//       "_": [4, "_", "S"]
+//     },
+//     "2": {
+//       "0": [1, "0", "R"],
+//       "1": [2, "1", "R"],
+//       "_": [4, "_", "S"]
+//     }
+//   },
+//   "s_0": 0,
+//   "s_a": [3]
+// }
+//            ''');
+//         print(tm.toJson());
+//         Navigator.of(context).push(
+//           MaterialPageRoute(
+//             builder: (context) => TuringMachineTesterScreen(turingMachine: tm),
+//           ),
+//         );
       },
       onStepCancel: () {
         if (_currentStep > 0) {
@@ -393,7 +426,10 @@ class _TransactionInputState extends State<TransactionInput> {
         // hacer un dropdown para el símbolo de entrada
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(labelText: 'Símbolo de Entrada'),
-          items: widget.inputAlphabet
+          items: widget.tapeAlphabet
+              .toSet()
+              .union(widget.inputAlphabet.toSet())
+              .toList()
               .map((symbol) =>
                   DropdownMenuItem(value: symbol, child: Text(symbol)))
               .toList(),
@@ -434,7 +470,7 @@ class _TransactionInputState extends State<TransactionInput> {
 
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(labelText: 'Dirección'),
-          items: ['L', 'R']
+          items: ['L', 'R', 'S']
               .map((direction) =>
                   DropdownMenuItem(value: direction, child: Text(direction)))
               .toList(),

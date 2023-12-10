@@ -292,7 +292,7 @@ class _PDACreatorState extends State<PDACreator> {
         final pda = PDA.fromJson(
             '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');
         debugPrint(pda.toJson());
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => PDATesterScreen(pda: pda),
           ),

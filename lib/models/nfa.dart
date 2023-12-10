@@ -66,22 +66,49 @@ class NFA {
   }
 
   factory NFA.fromJson(String jsonString) {
+    // {
+    //   "s": [0, 1],
+    //   "a": ["0", "1"],
+    //   "d": {
+    //     "0": {"0": [0], "1": [1]},
+    //     "1": {"0": [1], "1": [1]}
+    //   },
+    //   "s_0": 0,
+    //   "s_f": [1]
+    // }
     final jsonMap = json.decode(jsonString);
 
-    final Set<int> states = Set<int>.from(jsonMap['s'].map((e) => e));
+    final Set<int> states = Set<int>.from(jsonMap['s'].map((e) {
+      if (e is String) {
+        return int.parse(e);
+      }
+      return e;
+    }));
     final Set<String> alphabet = Set<String>.from(jsonMap['a']);
     final transitions = <int, Map<String, Set<int>>>{};
 
     jsonMap['d'].forEach((key, value) {
-      transitions[int.parse(key)] = Map<String, Set<int>>.from(value.map(
-        (k, v) {
-          return MapEntry(k, Set<int>.from(v.map((e) => e)));
-        },
-      ));
+      transitions[int.parse(key)] =
+          Map<String, Set<int>>.from(value.map((k, v) {
+        if (v is String) {
+          return MapEntry(k, {int.parse(v)});
+        }
+        return MapEntry(k, Set<int>.from(v));
+      }));
     });
 
-    final int initialState = jsonMap['s_0'];
-    final Set<int> finalStates = Set<int>.from(jsonMap['f_s'].map((e) => e));
+    late int initialState;
+    if (jsonMap['s_0'] is String) {
+      initialState = int.parse(jsonMap['s_0']);
+    } else {
+      initialState = jsonMap['s_0'];
+    }
+    final Set<int> finalStates = Set<int>.from(jsonMap['f_s'].map((e) {
+      if (e is String) {
+        return int.parse(e);
+      }
+      return e;
+    }));
 
     return NFA(
       states: states,

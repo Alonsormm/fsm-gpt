@@ -12,7 +12,7 @@ class DFATesterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DFATesterCubit(),
+      create: (context) => DFATesterCubit(dfa: dfa),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Prueba de AFD"),
@@ -50,8 +50,6 @@ class _DFATesterDisplay extends StatelessWidget {
           int? currentState;
           if (currentCubitState is DFATesterEvaluating) {
             currentState = currentCubitState.currentState;
-          } else if (currentCubitState is DFATesterFinished) {
-            currentState = currentCubitState.currentState;
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -79,10 +77,10 @@ class _DFATesterDisplay extends StatelessWidget {
               ),
               if (currentCubitState is DFATesterEvaluating)
                 Text("Estado Actual: q${currentCubitState.currentState}"),
-              if (currentCubitState is DFATesterFinished)
+              if (currentCubitState is DFATesterEvaluating &&
+                  currentCubitState.isFinished)
                 Column(
                   children: [
-                    Text("Estado Actual: q${currentCubitState.currentState}"),
                     Text(
                       "Estados Finales: ${dfa.finalStates.map((e) => "q$e").join(", ")}",
                     ),
@@ -113,44 +111,7 @@ class _DFATesterDisplay extends StatelessWidget {
   }
 
   void startEvaluation(BuildContext context) {
-    context.read<DFATesterCubit>().startEvaluation(
-          initialState: dfa.initialState,
-          onTimerTick: () {
-            final evaluatingState = context.read<DFATesterCubit>().state;
-            if (evaluatingState is! DFATesterEvaluating) {
-              return;
-            }
-
-            _evaluateState(context, evaluatingState);
-          },
-        );
-  }
-
-  void _evaluateState(
-      BuildContext context, DFATesterEvaluating evaluatingState) {
-    final nextState = dfa.nextState(
-      evaluatingState.currentState,
-      evaluatingState.input[evaluatingState.currentInputIndex],
-    );
-
-    if (nextState == null ||
-        evaluatingState.currentInputIndex == evaluatingState.input.length - 1) {
-      _finalizeEvaluation(context, evaluatingState, nextState == null);
-      return;
-    }
-
-    context.read<DFATesterCubit>().updateEvaluation(
-          currentState: nextState,
-          currentInputIndex: evaluatingState.currentInputIndex + 1,
-        );
-  }
-
-  void _finalizeEvaluation(
-      BuildContext context, DFATesterEvaluating evaluatingState, bool failed) {
-    final isFinalState =
-        failed ? false : dfa.finalStates.contains(evaluatingState.currentState);
-    evaluatingState.timer.cancel();
-    context.read<DFATesterCubit>().stopEvaluation(isFinalState);
+    context.read<DFATesterCubit>().startEvaluation();
   }
 }
 

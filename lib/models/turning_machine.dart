@@ -20,7 +20,7 @@ class TuringTransition extends Equatable {
   final String currentSymbol;
   final TuringState nextState;
   final String newSymbol;
-  final String direction; // 'L' for left, 'R' for right
+  final String direction; // 'L' for left, 'R' for right, 'S' for stay
 
   const TuringTransition({
     required this.currentState,
@@ -79,6 +79,8 @@ class TuringMachine {
         if (currentSymbolIndex >= tape.length) {
           tape.add('_');
         }
+      } else if (currentTransition.direction == 'S') {
+        currentSymbolIndex++;
       } else {
         currentSymbolIndex--;
         if (currentSymbolIndex < 0) {
@@ -102,21 +104,28 @@ class TuringMachine {
     List<String> tape,
     int headPosition,
   ) {
+    var currentState = state;
     var currentSymbol = tape[headPosition];
     TuringTransition? currentTransition = transitions.firstWhereOrNull(
       (transition) =>
-          transition.currentState == state &&
+          transition.currentState == currentState &&
           transition.currentSymbol == currentSymbol,
     );
     if (currentTransition == null) {
       return (null, tape, headPosition);
     }
-    tape[headPosition] = currentTransition.newSymbol;
+    tape = [...tape]..replaceRange(
+        headPosition,
+        headPosition + 1,
+        [currentTransition.newSymbol],
+      );
     if (currentTransition.direction == 'R') {
       headPosition++;
       if (headPosition >= tape.length) {
         tape.add('_');
       }
+    } else if (currentTransition.direction == 'S') {
+      // do nothing
     } else {
       headPosition--;
       if (headPosition < 0) {

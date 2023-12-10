@@ -37,6 +37,19 @@ class AutomaticoFlowInteracting extends AutomaticoFlowState {
   }
 }
 
+class AutomaticoFlowError extends AutomaticoFlowInteracting {
+  final String message;
+
+  const AutomaticoFlowError({
+    required FSMType type,
+    required String description,
+    required this.message,
+  }) : super(type: type, description: description);
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class AutomaticoGenerated extends AutomaticoFlowState {
   final String description;
   final String raw;

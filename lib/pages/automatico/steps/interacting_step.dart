@@ -15,7 +15,7 @@ class _InteractingStepState extends State<InteractingStep> {
   @override
   Widget build(BuildContext context) {
     final interactingState =
-        context.read<AutomaticoFlowCubit>().state as AutomaticoFlowInteracting;
+        context.watch<AutomaticoFlowCubit>().state as AutomaticoFlowInteracting;
     final type = interactingState.type;
     return SafeArea(
       child: Padding(
@@ -49,6 +49,8 @@ class _InteractingStepState extends State<InteractingStep> {
                 const SizedBox(height: 16),
                 if (interactingState.isLoading)
                   const CircularProgressIndicator(),
+                if (interactingState is AutomaticoFlowError)
+                  Text(interactingState.message),
               ],
             );
           },

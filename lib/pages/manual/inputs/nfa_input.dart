@@ -235,7 +235,7 @@ class _NFACreatorState extends State<NFACreator> {
             initialState: initialState ?? 0,
             finalStates: finalStates,
           );
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => NFATesterScreen(nfa: nfa),
             ),

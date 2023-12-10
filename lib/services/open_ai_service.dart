@@ -14,17 +14,20 @@ class OpenAIService {
       role: OpenAIChatMessageRole.assistant,
     );
     final solution = await OpenAI.instance.chat.create(
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-3.5-turbo-1106',
+      responseFormat: {"type": "json_object"},
       messages: [
         definitionSystem,
         OpenAIChatCompletionChoiceMessageModel(
           content: [
             OpenAIChatCompletionChoiceMessageContentItemModel.text(
-                "<<<$text>>>"),
+              "<<<$text>>>",
+            ),
           ],
           role: OpenAIChatMessageRole.user,
         )
       ],
+      temperature: 0.8,
     );
 
     return solution.choices.first.message.content?.first.text ?? '';

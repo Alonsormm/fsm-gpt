@@ -48,7 +48,8 @@ class TuringMachineTesterCubit extends Cubit<TuringMachineTesterState> {
     }
 
     final isAccepted = turingMachine.acceptanceStates.contains(nextState);
-    final isFinished = headPosition > nextTape.length - 1;
+
+    print('nextTape: $nextTape');
 
     emit(
       evaluatingState.copyWith(
@@ -56,11 +57,11 @@ class TuringMachineTesterCubit extends Cubit<TuringMachineTesterState> {
         tape: nextTape,
         headPosition: headPosition,
         isAccepted: isAccepted,
-        isFinished: isFinished,
+        isFinished: isAccepted,
       ),
     );
 
-    if (isFinished || isAccepted) {
+    if (isAccepted) {
       _stopEvaluatingState(isAccepted);
     }
   }
