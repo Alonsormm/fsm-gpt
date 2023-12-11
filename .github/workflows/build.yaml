@@ -16,4 +16,4 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           customArgs: --dart-define OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} # Add this line
-          basehref: /
+          basehref: /fsm-gpt/ # Add this line
