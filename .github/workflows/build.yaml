@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_KEY }}
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
