@@ -30,8 +30,6 @@ class FSMFromTextService {
     y usa el menor numero de estados posibles
   ''';
 
-  // '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');
-
   static const pushdownAutomataFormatInstructions = '''
     un automata de pila en un json en el que
     

@@ -1,12 +1,11 @@
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
-import 'package:fsm_gpt/env/env.dart';
 import 'package:fsm_gpt/home_widget.dart';
 import 'package:fsm_gpt/models/dfa.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
-  OpenAI.apiKey = Env.openAIAPIKey;
+  OpenAI.apiKey = const String.fromEnvironment('OPENAI_API_KEY');
   runApp(const MainApp());
 }
 
