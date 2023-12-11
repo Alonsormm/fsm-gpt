@@ -39,6 +39,7 @@ class _MainAppState extends State<MainApp> {
       ),
       home: const HomeWidget(),
       title: 'FSM GPT',
+      theme: ThemeData(useMaterial3: false),
     );
   }
 }
