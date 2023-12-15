@@ -276,18 +276,23 @@ class _PDACreatorState extends State<PDACreator> {
         //     );
         //     return;
         //   }
-        //   final pda = PushdownAutomaton(
-        //     states: states.map((state) => PdaState(state)).toSet(),
+        //   final pda = PDA(
+        //     states: states.map((state) => PDAState(state)).toSet(),
         //     inputAlphabet: Set<String>.from(inputAlphabet),
         //     stackAlphabet: Set<String>.from(stackAlphabet),
         //     // transitions are a list of PdaTransition objects
         //     transitions: transitions,
-        //     initialState: PdaState(initialState!),
+        //     initialState: PDAState(initialState!),
         //     initialStackSymbol: initialStackSymbol ?? '',
         //     acceptanceStates:
-        //         acceptanceStates.map((state) => PdaState(state)).toSet(),
+        //         acceptanceStates.map((state) => PDAState(state)).toSet(),
         //   );
-        //   print(pda.toJson());
+
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(
+        //       builder: (context) => PDATesterScreen(pda: pda),
+        //     ),
+        //   );
         // }
         final pda = PDA.fromJson(
             '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');

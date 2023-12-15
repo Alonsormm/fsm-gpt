@@ -13,23 +13,25 @@ class OpenAIService {
       ],
       role: OpenAIChatMessageRole.assistant,
     );
-    final solution = await OpenAI.instance.chat.create(
-      model: 'gpt-4-1106-preview',
-      responseFormat: {"type": "json_object"},
-      messages: [
-        definitionSystem,
-        OpenAIChatCompletionChoiceMessageModel(
-          content: [
-            OpenAIChatCompletionChoiceMessageContentItemModel.text(
-              "<<<$text>>>",
-            ),
+    final solution = await OpenAI.instance.chat
+        .create(
+          model: 'gpt-4-1106-preview',
+          responseFormat: {"type": "json_object"},
+          messages: [
+            definitionSystem,
+            OpenAIChatCompletionChoiceMessageModel(
+              content: [
+                OpenAIChatCompletionChoiceMessageContentItemModel.text(
+                  "<<<$text>>>",
+                ),
+              ],
+              role: OpenAIChatMessageRole.user,
+            )
           ],
-          role: OpenAIChatMessageRole.user,
+          temperature: 0.8,
+          frequencyPenalty: 0,
         )
-      ],
-      temperature: 0.8,
-      frequencyPenalty: 0,
-    );
+        .timeout(Duration(minutes: 1));
 
     return solution.choices.first.message.content?.first.text ?? '';
   }
