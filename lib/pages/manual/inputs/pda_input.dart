@@ -259,49 +259,49 @@ class _PDACreatorState extends State<PDACreator> {
         });
       },
       onStepContinue: () {
-        // if (_currentStep < 4) {
-        //   setState(() {
-        //     _currentStep += 1;
-        //   });
-        // } else {
-        //   if (states.isEmpty ||
-        //       inputAlphabet.isEmpty ||
-        //       stackAlphabet.isEmpty ||
-        //       initialState == null ||
-        //       acceptanceStates.isEmpty) {
-        //     ScaffoldMessenger.of(context).showSnackBar(
-        //       const SnackBar(
-        //         content: Text('Please fill all the fields'),
-        //       ),
-        //     );
-        //     return;
-        //   }
-        //   final pda = PDA(
-        //     states: states.map((state) => PDAState(state)).toSet(),
-        //     inputAlphabet: Set<String>.from(inputAlphabet),
-        //     stackAlphabet: Set<String>.from(stackAlphabet),
-        //     // transitions are a list of PdaTransition objects
-        //     transitions: transitions,
-        //     initialState: PDAState(initialState!),
-        //     initialStackSymbol: initialStackSymbol ?? '',
-        //     acceptanceStates:
-        //         acceptanceStates.map((state) => PDAState(state)).toSet(),
-        //   );
+        if (_currentStep < 4) {
+          setState(() {
+            _currentStep += 1;
+          });
+        } else {
+          if (states.isEmpty ||
+              inputAlphabet.isEmpty ||
+              stackAlphabet.isEmpty ||
+              initialState == null ||
+              acceptanceStates.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please fill all the fields'),
+              ),
+            );
+            return;
+          }
+          final pda = PDA(
+            states: states.map((state) => PDAState(state)).toSet(),
+            inputAlphabet: Set<String>.from(inputAlphabet),
+            stackAlphabet: Set<String>.from(stackAlphabet),
+            // transitions are a list of PdaTransition objects
+            transitions: transitions,
+            initialState: PDAState(initialState!),
+            initialStackSymbol: initialStackSymbol ?? '',
+            acceptanceStates:
+                acceptanceStates.map((state) => PDAState(state)).toSet(),
+          );
 
-        //   Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) => PDATesterScreen(pda: pda),
-        //     ),
-        //   );
-        // }
-        final pda = PDA.fromJson(
-            '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');
-        debugPrint(pda.toJson());
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => PDATesterScreen(pda: pda),
-          ),
-        );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PDATesterScreen(pda: pda),
+            ),
+          );
+        }
+        // final pda = PDA.fromJson(
+        //     '{"s":[0,1,2],"a":["ε","a","b"],"g":["Z0","ε","A"],"d":{"0":{"a":{"Z0":[0,"A"],"A":[0,"AA"]},"b":{"A":[1,"ε"]}},"1":{"b":{"A":[1,"ε"]},"ε":{"Z0":[2,"ε"]}}},"s_0":0,"g_0":"","f_s":[2]}');
+        // debugPrint(pda.toJson());
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => PDATesterScreen(pda: pda),
+        //   ),
+        // );
       },
       onStepCancel: () {
         if (_currentStep > 0) {
