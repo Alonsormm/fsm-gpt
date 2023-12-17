@@ -1,6 +1,16 @@
+import 'package:file_picker/file_picker.dart' as fp;
 import 'package:flutter/material.dart';
+import 'package:fsm_gpt/models/dfa.dart';
+import 'package:fsm_gpt/models/nfa.dart';
+import 'package:fsm_gpt/models/pda.dart';
+import 'package:fsm_gpt/models/turning_machine.dart';
 import 'package:fsm_gpt/pages/automatico/automatico_page.dart';
+import 'package:fsm_gpt/pages/dfa_tester/dfa_tester_screen.dart';
 import 'package:fsm_gpt/pages/manual/manual_page.dart';
+import 'package:fsm_gpt/pages/manual/turing_machine_tester.dart/turing_machine_tester_screen.dart';
+import 'package:fsm_gpt/pages/nfa_tester/nfa_tester_screen.dart';
+import 'package:fsm_gpt/pages/pda_tester/pda_tester_screen.dart';
+import 'package:fsm_gpt/services/import_service.dart';
 import 'package:kartal/kartal.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -15,6 +25,51 @@ class HomeWidget extends StatelessWidget {
           "Maquinas de Estado Finito - GPT",
           style: context.general.textTheme.titleLarge,
         ),
+        actions: [
+          // import button
+          IconButton(
+            onPressed: () async {
+              final result = await fp.FilePicker.platform.pickFiles(
+                allowedExtensions: ['json'],
+                type: fp.FileType.custom,
+                allowMultiple: false,
+              );
+
+              if (result == null) return;
+
+              final file = result.files.single;
+              final json = String.fromCharCodes(file.bytes!);
+              final fsm = await ImportService().importJson(json);
+              Widget? page;
+              if (fsm is DFA) {
+                page = DFATesterScreen(dfa: fsm);
+              } else if (fsm is NFA) {
+                page = NFATesterScreen(nfa: fsm);
+              } else if (fsm is TuringMachine) {
+                page = TuringMachineTesterScreen(turingMachine: fsm);
+              } else if (fsm is PDA) {
+                page = PDATesterScreen(pda: fsm);
+              }
+
+              if (!context.mounted) return;
+
+              if (page != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => page!,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Tipo de máquina no soportado"),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.upload_file),
+          ),
+        ],
       ),
       body: Center(
         child: Wrap(

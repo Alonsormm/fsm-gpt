@@ -193,6 +193,7 @@ class TuringMachine {
     }
     jsonMap['s_0'] = initialState.name;
     jsonMap['s_a'] = acceptanceStates.map((state) => state.name).toList();
+    jsonMap['t'] = transitions.length;
     return jsonEncode(jsonMap);
   }
 

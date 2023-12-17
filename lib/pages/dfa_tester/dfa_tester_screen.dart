@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_img/flutter_img.dart';
 import 'package:fsm_gpt/models/dfa.dart';
 import 'package:fsm_gpt/pages/dfa_tester/dfa_tester_cubit.dart';
+import 'package:fsm_gpt/services/export_service.dart';
+import 'package:fsm_gpt/widgets/export_name_dialog.dart';
 
 class DFATesterScreen extends StatelessWidget {
   final DFA dfa;
@@ -28,6 +31,42 @@ class DFATesterScreen extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.info_outline),
+            ),
+            PopupMenuButton<ExportType>(
+              itemBuilder: (context) {
+                return ExportType.values.map((exportType) {
+                  return PopupMenuItem<ExportType>(
+                    value: exportType,
+                    child: Text(exportType.label),
+                  );
+                }).toList();
+              },
+              onSelected: (value) async {
+                final exportService = ExportService();
+                final name = await showDialog<String>(
+                  context: context,
+                  builder: (context) => ExportNameDialog(),
+                );
+
+                if (name == null) return;
+
+                switch (value) {
+                  case ExportType.json:
+                    exportService.exportJson(dfa.toJson(), name);
+                    break;
+                  case ExportType.dot:
+                    exportService.exportAsDot(dfa.toDOT(null), name);
+                    break;
+                  case ExportType.pdf:
+                    exportService.exportAsPDF(dfa.toDOT(null), name);
+                    break;
+                  case ExportType.image:
+                    exportService.exportAsImage(dfa.toDOT(null), name);
+                    break;
+                  default:
+                    break;
+                }
+              },
             ),
           ],
         ),
@@ -101,7 +140,7 @@ class _DFATesterDisplay extends StatelessWidget {
     return Expanded(
       child: CachedNetworkImage(
         imageUrl:
-            'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(dfa.toDOT(currentState))}&format=png&engine=dot',
+            'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(dfa.toDOT(currentState))}&format=svg&engine=dot',
         imageBuilder: (context, imageProvider) => Image(
           image: imageProvider,
           fit: BoxFit.contain,

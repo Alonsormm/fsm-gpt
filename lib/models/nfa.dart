@@ -153,4 +153,21 @@ class NFA {
 
     return buffer.toString();
   }
+
+  String toJson() {
+    final jsonMap = <String, dynamic>{};
+
+    jsonMap['s'] = states.toList();
+    jsonMap['a'] = alphabet.toList();
+    jsonMap['d'] = transitions.map((key, value) {
+      return MapEntry(key.toString(), value.map((k, v) {
+        return MapEntry(k, v.toList());
+      }));
+    });
+    jsonMap['s_0'] = initialState;
+    jsonMap['f_s'] = finalStates.toList();
+    jsonMap['t'] = 'nfa';
+
+    return json.encode(jsonMap);
+  }
 }

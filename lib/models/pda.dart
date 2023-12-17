@@ -199,6 +199,7 @@ class PDA {
     jsonMap['s_0'] = initialState.name;
     jsonMap['g_0'] = initialStackSymbol;
     jsonMap['f_s'] = acceptanceStates.map((state) => state.name).toList();
+    jsonMap['t'] = 'pda';
     return jsonEncode(jsonMap);
   }
 

@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsm_gpt/models/nfa.dart'; // Asumiendo que esta clase existe
-import 'package:fsm_gpt/pages/nfa_tester/nfa_tester_cubit.dart'; // Asumiendo que esta clase existe
+import 'package:fsm_gpt/pages/nfa_tester/nfa_tester_cubit.dart';
+import 'package:fsm_gpt/services/export_service.dart';
+import 'package:fsm_gpt/widgets/export_name_dialog.dart'; // Asumiendo que esta clase existe
 
 class NFATesterScreen extends StatelessWidget {
   final NFA nfa;
@@ -22,6 +24,42 @@ class NFATesterScreen extends StatelessWidget {
                 showNFAInfoDialog(context, nfa, description: description);
               },
               icon: const Icon(Icons.info_outline),
+            ),
+            PopupMenuButton<ExportType>(
+              itemBuilder: (context) {
+                return ExportType.values.map((exportType) {
+                  return PopupMenuItem<ExportType>(
+                    value: exportType,
+                    child: Text(exportType.label),
+                  );
+                }).toList();
+              },
+              onSelected: (value) async {
+                final exportService = ExportService();
+                final name = await showDialog<String>(
+                  context: context,
+                  builder: (context) => ExportNameDialog(),
+                );
+
+                if (name == null) return;
+
+                switch (value) {
+                  case ExportType.json:
+                    exportService.exportJson(nfa.toJson(), name);
+                    break;
+                  case ExportType.dot:
+                    exportService.exportAsDot(nfa.toDOT(null), name);
+                    break;
+                  case ExportType.pdf:
+                    exportService.exportAsPDF(nfa.toDOT(null), name);
+                    break;
+                  case ExportType.image:
+                    exportService.exportAsImage(nfa.toDOT(null), name);
+                    break;
+                  default:
+                    break;
+                }
+              },
             ),
           ],
         ),
@@ -97,7 +135,7 @@ class _NFATesterDisplay extends StatelessWidget {
     return Expanded(
       child: CachedNetworkImage(
         imageUrl:
-            'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(nfa.toDOT(currentStates))}&format=png&engine=dot',
+            'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(nfa.toDOT(currentStates))}&format=svg&engine=dot',
         imageBuilder: (context, imageProvider) => Image(
           image: imageProvider,
           fit: BoxFit.contain,
