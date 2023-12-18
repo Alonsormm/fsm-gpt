@@ -12,7 +12,7 @@ class ImportService {
       return NFA.fromJson(json);
     } else if (decodedJson['t'] == 'dfa') {
       return DFA.fromJson(json);
-    } else if (decodedJson['t'] == 'tm') {
+    } else if (decodedJson['t'] == 'turing') {
       return TuringMachine.fromJson(json);
     } else if (decodedJson['t'] == 'pda') {
       return PDA.fromJson(json);

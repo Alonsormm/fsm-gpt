@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsm_gpt/models/turning_machine.dart';
 import 'package:fsm_gpt/pages/manual/turing_machine_tester.dart/turing_machine_tester_cubit.dart';
+import 'package:fsm_gpt/services/export_service.dart';
+import 'package:fsm_gpt/widgets/export_name_dialog.dart';
 
 class TuringMachineTesterScreen extends StatelessWidget {
   final TuringMachine turingMachine;
@@ -31,6 +33,45 @@ class TuringMachineTesterScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.info_outline),
             ),
+            PopupMenuButton<ExportType>(
+              itemBuilder: (context) {
+                return ExportType.values.map((exportType) {
+                  return PopupMenuItem<ExportType>(
+                    value: exportType,
+                    child: Text(exportType.label),
+                  );
+                }).toList();
+              },
+              onSelected: (value) async {
+                final exportService = ExportService();
+                final name = await showDialog<String>(
+                  context: context,
+                  builder: (context) => ExportNameDialog(),
+                );
+
+                if (name == null) return;
+
+                switch (value) {
+                  case ExportType.json:
+                    exportService.exportJson(turingMachine.toJson(), name);
+                    break;
+                  case ExportType.dot:
+                    exportService.exportAsDot(
+                        turingMachine.toDOT(null, null, null), name);
+                    break;
+                  case ExportType.pdf:
+                    exportService.exportAsPDF(
+                        turingMachine.toDOT(null, null, null), name);
+                    break;
+                  case ExportType.image:
+                    exportService.exportAsImage(
+                        turingMachine.toDOT(null, null, null), name);
+                    break;
+                  default:
+                    break;
+                }
+              },
+            ),
           ],
         ),
         body: _TuringMachineTesterDisplay(turingMachine: turingMachine),
@@ -49,7 +90,6 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<TuringMachineTesterCubit, TuringMachineTesterState>(
         builder: (context, currentCubitState) {
-          print("REBUILDING");
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -110,9 +150,8 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
     final currentTape = currentCubitState.tape;
     final headPosition = currentCubitState.headPosition;
 
-    return Center(
-      child: SizedBox(
-        height: 100,
+    return Expanded(
+      child: Center(
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: currentTape.length,
@@ -124,12 +163,21 @@ class _TuringMachineTesterDisplay extends StatelessWidget {
               children: [
                 if (index == headPosition)
                   const Icon(Icons.keyboard_arrow_down_rounded),
-                Text(
-                  currentSymbol,
-                  style: TextStyle(
-                    fontWeight: index == headPosition
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+                Container(
+                  width: 64,
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    color: index == headPosition ? Colors.blue : Colors.grey,
+                  ),
+                  child: Text(
+                    currentSymbol,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: index == headPosition
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      fontSize: 48,
+                    ),
                   ),
                 ),
                 if (index == headPosition)

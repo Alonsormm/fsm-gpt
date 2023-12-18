@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
   OpenAI.apiKey = const String.fromEnvironment('OPENAI_API_KEY');
+  OpenAI.requestsTimeOut = const Duration(minutes: 1);
   runApp(const MainApp());
 }
 
@@ -28,6 +29,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
         breakpoints: [

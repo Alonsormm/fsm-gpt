@@ -49,8 +49,6 @@ class TuringMachineTesterCubit extends Cubit<TuringMachineTesterState> {
 
     final isAccepted = turingMachine.acceptanceStates.contains(nextState);
 
-    print('nextTape: $nextTape');
-
     emit(
       evaluatingState.copyWith(
         currentState: nextState,
@@ -75,7 +73,15 @@ class TuringMachineTesterCubit extends Cubit<TuringMachineTesterState> {
   void _createEvaluatingState(TuringMachineTesterSettingUp settingUpState) {
     var initialState = turingMachine.initialState;
     var initialTape = settingUpState.input.split('');
-    var initialHeadPosition = 0;
+    // add _ at start of tape if needed
+    if (initialTape.isEmpty || initialTape.first != '_') {
+      initialTape.insert(0, '_');
+    }
+    // add _ at end of tape if needed
+    if (initialTape.isEmpty || initialTape.last != '_') {
+      initialTape.add('_');
+    }
+    var initialHeadPosition = 1;
 
     emit(TuringMachineTesterEvaluating(
       input: settingUpState.input,

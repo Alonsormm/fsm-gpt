@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_img/flutter_img.dart';
 import 'package:fsm_gpt/models/dfa.dart';
 import 'package:fsm_gpt/pages/dfa_tester/dfa_tester_cubit.dart';
 import 'package:fsm_gpt/services/export_service.dart';

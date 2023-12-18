@@ -31,7 +31,7 @@ class OpenAIService {
           temperature: 0.8,
           frequencyPenalty: 0,
         )
-        .timeout(Duration(minutes: 1));
+        .timeout(const Duration(minutes: 1));
 
     return solution.choices.first.message.content?.first.text ?? '';
   }

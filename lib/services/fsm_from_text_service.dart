@@ -59,7 +59,7 @@ class FSMFromTextService {
     donde el simbolo vacio siempre es "ε", y el simbolo de la pila vacia es "Z0"
     siguiendo la notacion si el simbolo de la pila es "ε" entonces se saca un simbolo de la pila
     si el simbolo de la pila es "A" y la transicion es "A" entonces no se hace nada
-    si el simbolo de la pila es "A" y la transicion es "AA" entonces se mete una "A" a la pila
+    si el simbolo de la pila es "A" y la transicion es "AA" entonces se mete una "A" a la pila, el primer simbolo es el tope de la pila y el ultimo es el fondo de la pila esto solo es necesario cuando se mete un simbolo a la pila que es el mismo que el tope de la pila
     asegurate que siempre se puede llegar a un estado de aceptación
     y usa el menor numero de estados posibles
   ''';
@@ -76,6 +76,7 @@ class FSMFromTextService {
     donde el simbolo vacio siempre es "_"
     asegurate que siempre se puede llegar a un estado de aceptación
     y usa el menor numero de estados posibles
+    no es necesario que cada estado tenga una transicion para cada simbolo, solo las que sean necesarias
   ''';
 
   static String getInstructions(FSMType type) {

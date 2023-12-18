@@ -176,7 +176,7 @@ class _InputEvaluatorIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 56,
+      height: 64,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,

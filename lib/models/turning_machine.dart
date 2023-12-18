@@ -136,27 +136,21 @@ class TuringMachine {
     return (currentTransition.nextState, tape, headPosition);
   }
 
-  String toDOT(TuringState? currentState, List<String> tape, int headPosition) {
+  String toDOT(
+      TuringState? currentState, List<String>? tape, int? headPosition) {
     final sb = StringBuffer();
     sb.writeln('digraph {');
     sb.writeln('rankdir=LR;');
     sb.writeln('node [shape = circle];');
     for (final state in states) {
+      // si es un estado de aceptacion lo pinto de doble circulo
+      if (acceptanceStates.contains(state)) {
+        sb.writeln('$state [label = "$state", peripheries = 2];');
+      } else {
+        sb.writeln('$state [label = "$state"];');
+      }
       sb.writeln('$state [label = "$state"];');
     }
-    sb.writeln('node [shape = plaintext];');
-    sb.writeln(
-        '"" [label = <<table border="0" cellborder="1" cellspacing="0">');
-    sb.writeln('<tr>');
-    for (var i = 0; i < tape.length; i++) {
-      if (i == headPosition) {
-        sb.writeln('<td bgcolor="lightblue">${tape[i]}</td>');
-      } else {
-        sb.writeln('<td>${tape[i]}</td>');
-      }
-    }
-    sb.writeln('</tr>');
-    sb.writeln('</table>>];');
     sb.writeln('node [shape = circle];');
     for (final transition in transitions) {
       if (transition.currentState == currentState) {
@@ -193,7 +187,7 @@ class TuringMachine {
     }
     jsonMap['s_0'] = initialState.name;
     jsonMap['s_a'] = acceptanceStates.map((state) => state.name).toList();
-    jsonMap['t'] = transitions.length;
+    jsonMap['t'] = 'turing';
     return jsonEncode(jsonMap);
   }
 
@@ -217,9 +211,14 @@ class TuringMachine {
         if (jsonMap['d'][currentState.name.toString()][currentSymbol] == null) {
           continue;
         }
-        final nextState = TuringState(
-          jsonMap['d'][currentState.name.toString()][currentSymbol][0] as int,
-        );
+        final nextStateInJson =
+            jsonMap['d'][currentState.name.toString()][currentSymbol][0];
+        late final TuringState nextState;
+        if (nextStateInJson.runtimeType == String) {
+          nextState = TuringState(int.parse(nextStateInJson as String));
+        } else {
+          nextState = TuringState(nextStateInJson as int);
+        }
         final newSymbol = jsonMap['d'][currentState.name.toString()]
             [currentSymbol][1] as String;
         final direction = jsonMap['d'][currentState.name.toString()]

@@ -28,7 +28,7 @@ class _InteractingStepState extends State<InteractingStep> {
                 Text('Crea un ${type.label} que: '),
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: 'Escriba una expresión regular',
+                    hintText: 'Detecte una cadena que ...',
                   ),
                   controller: textController,
                   onChanged: (value) {
@@ -41,9 +41,11 @@ class _InteractingStepState extends State<InteractingStep> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    context.read<AutomaticoFlowCubit>().generate();
-                  },
+                  onPressed: textController.text.isEmpty
+                      ? null
+                      : () {
+                          context.read<AutomaticoFlowCubit>().generate();
+                        },
                   child: const Text('Crear'),
                 ),
                 const SizedBox(height: 16),

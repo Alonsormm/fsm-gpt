@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart' as fp;
 import 'package:flutter/material.dart';
 import 'package:fsm_gpt/models/dfa.dart';
@@ -12,6 +14,8 @@ import 'package:fsm_gpt/pages/nfa_tester/nfa_tester_screen.dart';
 import 'package:fsm_gpt/pages/pda_tester/pda_tester_screen.dart';
 import 'package:fsm_gpt/services/import_service.dart';
 import 'package:kartal/kartal.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomeWidget extends StatelessWidget {
   const HomeWidget({super.key});
@@ -38,7 +42,7 @@ class HomeWidget extends StatelessWidget {
               if (result == null) return;
 
               final file = result.files.single;
-              final json = String.fromCharCodes(file.bytes!);
+              final json = utf8.decode(file.bytes!);
               final fsm = await ImportService().importJson(json);
               Widget? page;
               if (fsm is DFA) {
@@ -68,6 +72,12 @@ class HomeWidget extends StatelessWidget {
               }
             },
             icon: const Icon(Icons.upload_file),
+          ),
+          IconButton(
+            onPressed: () {
+              launchUrlString('http://www.example.com');
+            },
+            icon: const Icon(Icons.help_outline),
           ),
         ],
       ),

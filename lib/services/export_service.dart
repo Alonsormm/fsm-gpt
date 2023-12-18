@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -24,7 +26,7 @@ class ExportService {
     await FileSaver.instance.saveFile(
       name: '$name.json',
       mimeType: MimeType.json,
-      bytes: Uint8List.fromList(json.codeUnits),
+      bytes: Uint8List.fromList(utf8.encode(json)),
     );
   }
 
@@ -38,13 +40,19 @@ class ExportService {
 
   Future<void> exportAsPDF(String dot, String name) async {
     final svg = await _downloadImage(dot);
-    final svgImage = pw.SvgImage(svg: svg, fit: pw.BoxFit.contain);
 
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
-        pageFormat: PdfPageFormat.a4,
+        pageFormat: PdfPageFormat.letter,
+        orientation: pw.PageOrientation.landscape,
         build: (context) {
+          final svgImage = pw.SvgImage(
+            svg: svg,
+            fit: pw.BoxFit.contain,
+            height: PdfPageFormat.letter.height,
+            width: PdfPageFormat.letter.width,
+          );
           return pw.Expanded(child: svgImage);
         },
       ),
@@ -70,7 +78,7 @@ class ExportService {
   Future<String> _downloadImage(String dot) async {
     final response = await http.get(
       Uri.parse(
-        'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(dot)}&format=svf&engine=dot',
+        'https://quickchart.io/graphviz?graph=${Uri.encodeComponent(dot)}&format=svg&engine=dot',
       ),
     );
 
