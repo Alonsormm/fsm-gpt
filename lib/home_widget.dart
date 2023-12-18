@@ -75,7 +75,8 @@ class HomeWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              launchUrlString('http://www.example.com');
+              launchUrlString(
+                  'https://drive.google.com/file/d/1viXQCw7bV2ez_h0iAesHY6XefKxlooGt/view?usp=sharing');
             },
             icon: const Icon(Icons.help_outline),
           ),
